@@ -18,7 +18,7 @@ class EnglishAuction(Auction):
         while bid_bool:
             bid_bool=False
             for bidder in bidders:
-                bid = self.cli.prompt(f"Opening bid is {opening_bid}. {bidder} bids:")
+                bid = self.cli.prompt(f"Standing bid is {standing_bid}. {bidder} bids:")
                 if not bid:
                     continue
                 bid = int(bid)
