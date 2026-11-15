@@ -8,22 +8,15 @@ class VickreyAuction(Auction):
         self.auction_name="Vickrey"
 
     def auction_loop(self, opening_bid, bidders):
-            bids=[]
-            for bidder in bidders:
-                 bid=self.cli.prompt(f"Opening bid is {opening_bid}. {bidder} bids:")
-                 if not bid:
-                      continue
-                 bid=int(bid)
-                 if bid>opening_bid:
-                      bids.append((bid,bidder))
+            bids = self.bidding_round(bidders, opening_bid)
             if not bids:
                  return None, opening_bid
             bids.sort(reverse=True)
-            winner=bids[0][1]
-            if len(bids)==1:
-                 price=opening_bid
+            winner = bids[0][1]
+            if len(bids)>1:
+                price=bids[1][0]
             else:
-                 price=bids[1][0]
+                 price=opening_bid
             return winner, price
 
 if __name__ == "__main__":

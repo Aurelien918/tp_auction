@@ -31,6 +31,21 @@ class Auction():
     def auction_loop(self,opening_bid,bidders):
         raise NotImplementedError
 
+    def bidding_round(self, bidders, minimum, live=False):
+        bids=[]
+        current=minimum
+        for bidder in bidders:
+            bid=bid=self.cli.prompt(f"Opening bid is {current}. {bidder} bids:")
+            if not bid:
+                continue
+            bid=int(bid)
+            if bid>current:
+                bids.append((bid,bidder))
+                if live:
+                    current=bid
+        return bids
+
+
     def play(self):
         opening_bid=self.opening_bid()
         bidders=self.bidders()

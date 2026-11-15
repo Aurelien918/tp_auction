@@ -14,18 +14,11 @@ class EnglishAuction(Auction):
         # Collect bids
         standing_bid = opening_bid
         winner = None
-        bid_bool=True
-        while bid_bool:
-            bid_bool=False
-            for bidder in bidders:
-                bid = self.cli.prompt(f"Standing bid is {standing_bid}. {bidder} bids:")
-                if not bid:
-                    continue
-                bid = int(bid)
-                if bid > standing_bid:
-                    standing_bid = bid
-                    winner = bidder
-                    bid_bool=True
+        while True:
+            accepted = self.bidding_round(bidders, standing_bid, live=True)
+            if not accepted:
+                break
+            standing_bid,winner=accepted[-1]
         return winner, standing_bid
         
 
