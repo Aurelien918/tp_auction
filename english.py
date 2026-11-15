@@ -1,48 +1,36 @@
 # pylint: disable=missing-docstring
-
+from auction import Auction
 from utils import Cli
 from itertools import count
 
 
-class EnglishAuction():
+class EnglishAuction(Auction):
 
     def __init__(self, cli=None):
-        self.cli = cli if cli else Cli()
+        super().__init__(cli)
+        self.auction_name="English"
 
-    def play(self):
-        #Input opening bid
-        self.cli.display('Started auction of type: English')
-        opening_bid = self.cli.prompt('Please enter the amount for the opening bid:')
-        opening_bid = int(opening_bid)
-        self.cli.display(f"Opening bid is: {opening_bid}")
-        # Input bidders
-        bidders = []
-        for index in count(1):
-            bidder = self.cli.prompt(f"Enter name for bidder {index} (enter nothing to move on):")
-            if not bidder:
-                break
-            bidders.append(bidder)
-        self.cli.display(f"\nBidders are: {', '.join(bidders)}\n")
-        
+    def auction_loop(self, opening_bid, bidders):
         # Collect bids
         standing_bid = opening_bid
         winner = None
-        for bidder in bidders:
-            bid = self.cli.prompt(f"Opening bid is {opening_bid}. {bidder} bids:")
-            bid = int(bid)
-            if bid > standing_bid:
-                standing_bid = bid
-                winner = bidder
+        bid_bool=True
+        while bid_bool:
+            bid_bool=False
+            for bidder in bidders:
+                bid = self.cli.prompt(f"Opening bid is {opening_bid}. {bidder} bids:")
+                if not bid:
+                    continue
+                bid = int(bid)
+                if bid > standing_bid:
+                    standing_bid = bid
+                    winner = bidder
+                    bid_bool=True
+        return winner, standing_bid
         
-        # Display winner
-        self.cli.display("\n~~~~~~~~\n")
-        self.cli.display(f"Winner is {winner}. Winning bid is {standing_bid}.")
-        
-
 
 if __name__ == "__main__":
-    auction = EnglishAuction()
-    auction.play()
+    EnglishAuction().play()
 
 
 
